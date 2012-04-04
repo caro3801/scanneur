@@ -1,1 +1,4 @@
 Je sais pas si c'est la bonne methode pour checker si les parametre sont bons.... au pire on verra plus tard!
+
+J'ai reflechi et au final c'etait pas top de commencer par l'interface car elle est pas indispensable pour tester le prog.
+.....on apprend de ses erreurs!
