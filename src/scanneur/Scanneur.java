@@ -6,6 +6,7 @@
 package scanneur;
 
 import java.net.*;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -25,8 +26,8 @@ public class Scanneur implements Runnable {
     int[] portsToScan;
     boolean udp = true;
     boolean tcp = true;
-    public static int NBTHREAD = 10;
-
+    public static int nbThread = 30;
+    public Vector<Thread> vectorT = new Vector<>();
    
 
     public Scanneur(String hostname) throws ScanneurException {
@@ -73,6 +74,7 @@ public class Scanneur implements Runnable {
 
             //definie les ports à scanner
             int i = 0;
+            
             while (lowestPort <= highestPort) {
                 portsToScan[i] = lowestPort++;
 
@@ -86,23 +88,24 @@ public class Scanneur implements Runnable {
     }
 
     private void scan(int port, boolean tcp, boolean udp) {
-     
+        System.out.println(Thread.enumerate((Thread[])vectorT.toArray()));
             
         if (tcp) {
             
-            while(Thread.activeCount()>60);
+            while(Thread.activeCount()>this.nbThread);
             TCPscan tcpscan = new TCPscan(host, port);
-            
+            vectorT.add(tcpscan);
             tcpscan.start();
             //System.out.println(tcpscan.getPortStatus());
             
         }
         if (udp) {
-           while(Thread.activeCount()>60);
+           while(Thread.activeCount()>this.nbThread);
             //System.out.println(Thread.activeCount());
             
 
             UDPscan udpscan = new UDPscan(host, port);
+            vectorT.add(udpscan);
             udpscan.start();
             
            // System.out.println(udpscan.getPortStatus());
@@ -112,7 +115,7 @@ public class Scanneur implements Runnable {
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 2049);
+        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 1500,2100);
         s.parcours();
             
     }

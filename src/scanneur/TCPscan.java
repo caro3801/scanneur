@@ -62,9 +62,7 @@ public class TCPscan extends Thread {
             //notifier le statut du port
         } catch (NoRouteToHostException e) {
 
-            //erreur lors du contact avec l'host
-
-            return;
+           
         }
     }
 
