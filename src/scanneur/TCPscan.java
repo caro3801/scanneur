@@ -58,7 +58,7 @@ public class TCPscan extends Thread {
     public void run() {
         try {
             this.portStatus = this.scanTCP();
-            System.out.println("tcp " + this.portStatus);
+            System.out.println(this.port+"\ttcp\t" + this.portStatus);
             //notifier le statut du port
         } catch (NoRouteToHostException e) {
 
