@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException;
  * Scan TCP pour un port et une adresse donnée
  * @author Caroline
  */
-public class TCPscan implements Runnable {
+public class TCPscan extends Thread {
 
     private InetAddress IP;
     private int port;
