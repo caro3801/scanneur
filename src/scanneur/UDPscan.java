@@ -12,6 +12,7 @@ public class UDPscan implements Runnable {
 
     private InetAddress adresse;
     private int port;
+    private String portStatus;
 
     UDPscan(InetAddress adresse, int port) {
         this.adresse = adresse;
@@ -27,15 +28,18 @@ public class UDPscan implements Runnable {
             DatagramSocket ds = new DatagramSocket();
             int pp = ds.getLocalPort();
             ds.setSoTimeout(1000);
+            ds.connect(adresse,port);
             ds.send(dp);
             dp = new DatagramPacket(tampon, tampon.length);
 
             ds.receive(dp);
-//            String t = new String(dp.getData());
-//            System.out.println(t);
+            ds.disconnect();
             ds.close();
 
-        } catch (SocketTimeoutException ex) {
+        }catch (PortUnreachableException ex) {
+            return "FERME";
+
+        }catch (SocketTimeoutException ex) {
             return "OUVERT | FILTRE";
 
         } catch (InterruptedIOException e) {
@@ -51,20 +55,8 @@ public class UDPscan implements Runnable {
 
     @Override
     public void run() {
-        String portStatus = this.scanUDP();
-        System.out.println(portStatus);
+        this.portStatus = this.scanUDP();
+        System.out.println("udp " +this.portStatus);
     }
 
-    public static void main(String[] args) {
-
-        InetAddress ia = null;
-        try {
-            ia = InetAddress.getByName("prevert.upmf-grenoble.fr");
-        } catch (UnknownHostException ex) {
-            System.out.println("hote inconnu");
-        }
-
-        UDPscan udpscan = new UDPscan(ia, 2049);
-        udpscan.run();
-    }
 }
