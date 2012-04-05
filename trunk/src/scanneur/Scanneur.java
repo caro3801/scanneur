@@ -26,12 +26,12 @@ public class Scanneur extends Thread {
     int nbThread;
     boolean configOK = false;
     int lowestPort;
-    int hightPort;
+    int highestPort;
     InetAddress host;
     int[] portsToScan;
-
-    boolean udp=true;
-    boolean tcp=true;
+    boolean udp = true;
+    boolean tcp = true;
+    public static int NBTHREAD = 10;
 
     Scanneur(String adresse, boolean udp, boolean tcp, String portD, String portF, boolean plage, String nbThread, JLabel jlabel) {
         this.jlabel = jlabel;
@@ -72,53 +72,59 @@ public class Scanneur extends Thread {
         }
     }
 
-    public Scanneur(String hostname, int lowestPort) throws ScanneurException{
+    public Scanneur(String hostname, int lowestPort) throws ScanneurException {
         this(hostname, lowestPort, lowestPort);
     }
+
     public Scanneur(String hostname, int lowestPort, int highestPort) throws ScanneurException {
         try {
-            host = InetAddress.getByName(hostname);
-            if (lowestPort <= highestPort && lowestPort > 0) {
-                portsToScan = new int[highestPort - lowestPort + 1];
+            this.host = InetAddress.getByName(hostname);
+            this.lowestPort = lowestPort;
+            this.highestPort = highestPort;
 
-                //definie les ports à scanner
-                int i = 0;
-                while (lowestPort <= highestPort) {
-                    portsToScan[i++] = lowestPort++;
-
-                    System.out.println(portsToScan[i - 1]);
-                    scan(portsToScan[i - 1], tcp, udp);
-                }
-
-            } else {
-                //mauvais interval de ports
-                throw new ScanneurException("Mauvais interval de ports");
-            }
         } catch (UnknownHostException ex) {
             Logger.getLogger(Scanneur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private void parcours() throws ScanneurException {
+        if (lowestPort <= highestPort && lowestPort > 0) {
+            portsToScan = new int[highestPort - lowestPort + 1];
+
+            //definie les ports à scanner
+            int i = 0;
+            while (lowestPort <= highestPort) {
+                portsToScan[i] = lowestPort++;
+
+                System.out.println(portsToScan[i]);
+                scan(portsToScan[i++], tcp, udp);
+            }
+        } else {
+            //mauvais interval de ports
+            throw new ScanneurException("Mauvais interval de ports");
+        }
+    }
+
     private void scan(int port, boolean tcp, boolean udp) {
         if (tcp) {
-            System.out.print("tcp ");
             TCPscan tcpscan = new TCPscan(host, port);
             tcpscan.run();
+            System.out.println(tcpscan.getPortStatus());
         }
         if (udp) {
-            
-            System.out.print("udp ");
+
             UDPscan udpscan = new UDPscan(host, port);
             udpscan.run();
-            
+
+            System.out.println(udpscan.getPortStatus());
 
         }
 
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s= new Scanneur("prevert.upmf-grenoble.fr", 2049 );
-        
+        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 2048, 2055);
+        s.parcours();
     }
 
     @Override
