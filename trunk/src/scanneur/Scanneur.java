@@ -72,6 +72,9 @@ public class Scanneur extends Thread {
         }
     }
 
+    public Scanneur(String hostname, int lowestPort) throws ScanneurException{
+        this(hostname, lowestPort, lowestPort);
+    }
     public Scanneur(String hostname, int lowestPort, int highestPort) throws ScanneurException {
         try {
             host = InetAddress.getByName(hostname);
@@ -107,13 +110,14 @@ public class Scanneur extends Thread {
             System.out.print("udp ");
             UDPscan udpscan = new UDPscan(host, port);
             udpscan.run();
+            
 
         }
 
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s= new Scanneur("prevert.upmf-grenoble.fr", 2048,2050 );
+        Scanneur s= new Scanneur("prevert.upmf-grenoble.fr", 2049 );
         
     }
 
