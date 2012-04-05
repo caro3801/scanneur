@@ -92,6 +92,7 @@ public class Scanneur implements Runnable {
             
             while(Thread.activeCount()>60);
             TCPscan tcpscan = new TCPscan(host, port);
+            
             tcpscan.start();
             //System.out.println(tcpscan.getPortStatus());
             
@@ -111,7 +112,7 @@ public class Scanneur implements Runnable {
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 1, 2070);
+        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 2049);
         s.parcours();
             
     }

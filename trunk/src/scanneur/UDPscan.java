@@ -58,6 +58,7 @@ public class UDPscan extends Thread {
     @Override
     public void run() {
         this.portStatus = this.scanUDP();
-        System.out.println("udp " + this.portStatus);
+        System.out.println(this.port + "\tudp\t" + this.portStatus);
+
     }
 }
