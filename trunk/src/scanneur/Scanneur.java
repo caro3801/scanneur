@@ -87,8 +87,10 @@ public class Scanneur implements Runnable {
     }
 
     private void scan(int port, boolean tcp, boolean udp) {
-        System.out.println(Thread.enumerate((Thread[]) vectorT.toArray()));
-
+        Thread[] t = new Thread[5000];
+        
+        System.out.println("nb thread actif : "+Thread.enumerate(vectorT.toArray(t)));
+            
         if (tcp) {
 
             while (Thread.activeCount() > this.nbThread);
