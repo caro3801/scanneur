@@ -14,7 +14,7 @@ import javax.swing.JLabel;
  *
  * @author mejor
  */
-public class Scanneur extends Thread {
+public class Scanneur implements Runnable {
 
     /**
      * @param args the command line arguments
@@ -76,7 +76,7 @@ public class Scanneur extends Thread {
             while (lowestPort <= highestPort) {
                 portsToScan[i] = lowestPort++;
 
-                System.out.println(portsToScan[i]);
+              //  System.out.println(portsToScan[i]);
                 scan(portsToScan[i++], tcp, udp);
             }
         } else {
@@ -86,25 +86,34 @@ public class Scanneur extends Thread {
     }
 
     private void scan(int port, boolean tcp, boolean udp) {
+     
+            
         if (tcp) {
+            
+            while(Thread.activeCount()>60);
             TCPscan tcpscan = new TCPscan(host, port);
             tcpscan.start();
-            System.out.println(tcpscan.getPortStatus());
+            //System.out.println(tcpscan.getPortStatus());
+            
         }
         if (udp) {
+           while(Thread.activeCount()>60);
+            //System.out.println(Thread.activeCount());
+            
 
             UDPscan udpscan = new UDPscan(host, port);
             udpscan.start();
-
-            System.out.println(udpscan.getPortStatus());
+            
+           // System.out.println(udpscan.getPortStatus());
 
         }
 
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 2048, 2055);
+        Scanneur s = new Scanneur("prevert.upmf-grenoble.fr", 1, 2070);
         s.parcours();
+            
     }
 
     @Override
