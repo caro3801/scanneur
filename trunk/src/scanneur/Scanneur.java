@@ -72,10 +72,21 @@ public class Scanneur extends Thread {
         }
     }
 
-    public Scanneur(String hostname, int lowestPort) throws ScanneurException {
-        this(hostname, lowestPort, lowestPort);
+    /**
+     * Consctructeur de scanneur pour un port donne
+     * @param hostname Adresse de l'hote
+     * @param port Numero de port a scanner
+     */
+    public Scanneur(String hostname, int port)  {
+        this(hostname, port, port);
     }
 
+    /**
+     * Constructeur du scanner pour une plage de port
+     * @param hostname Adresse de l'hote
+     * @param lowestPort port de début
+     * @param highestPort port de fin
+     */
     public Scanneur(String hostname, int lowestPort, int highestPort)  {
         try {
             this.host = InetAddress.getByName(hostname);
@@ -87,6 +98,10 @@ public class Scanneur extends Thread {
         }
     }
 
+    /**
+     * Parcours de la plage de ports 
+     * @throws ScanneurException 
+     */
     private void parcours() throws ScanneurException {
         if (lowestPort <= highestPort && lowestPort > 0) {
             portsToScan = new int[highestPort - lowestPort + 1];
