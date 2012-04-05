@@ -28,12 +28,11 @@ public class UDPscan implements Runnable {
             int pp = ds.getLocalPort();
             ds.setSoTimeout(1000);
             ds.send(dp);
-            System.out.println("msg envoyé sur le port " + port + " du port " + pp);
             dp = new DatagramPacket(tampon, tampon.length);
 
             ds.receive(dp);
-            String t = new String(dp.getData());
-            System.out.println(t);
+//            String t = new String(dp.getData());
+//            System.out.println(t);
             ds.close();
 
         } catch (SocketTimeoutException ex) {
