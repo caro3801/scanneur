@@ -21,12 +21,17 @@ public class Scanneur extends Thread {
      */
     JLabel jlabel;
     InetAddress adresse;
-    boolean udp;
-    boolean tcp;
     int portDebut;
     int portFin;
     int nbThread;
     boolean configOK = false;
+    int lowestPort;
+    int hightPort;
+    InetAddress host;
+    int[] portsToScan;
+
+    boolean udp=true;
+    boolean tcp=true;
 
     Scanneur(String adresse, boolean udp, boolean tcp, String portD, String portF, boolean plage, String nbThread, JLabel jlabel) {
         this.jlabel = jlabel;
@@ -58,10 +63,61 @@ public class Scanneur extends Thread {
             jlabel.setText(adresse + " inconnue");
         }
     }
-    
-    @Override
-    public void run(){
+
+    public Scanneur(String hostname) throws ScanneurException {
+        try {
+            host = InetAddress.getByName(hostname);
+        } catch (UnknownHostException e) {
+            throw new ScanneurException("Host: " + hostname + " unknown :(");
+        }
+    }
+
+    public Scanneur(String hostname, int lowestPort, int highestPort) throws ScanneurException {
+        try {
+            host = InetAddress.getByName(hostname);
+            if (lowestPort <= highestPort && lowestPort > 0) {
+                portsToScan = new int[highestPort - lowestPort + 1];
+
+                //definie les ports à scanner
+                int i = 0;
+                while (lowestPort <= highestPort) {
+                    portsToScan[i++] = lowestPort++;
+
+                    System.out.println(portsToScan[i - 1]);
+                    scan(portsToScan[i - 1], tcp, udp);
+                }
+
+            } else {
+                //mauvais interval de ports
+                throw new ScanneurException("Mauvais interval de ports");
+            }
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Scanneur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void scan(int port, boolean tcp, boolean udp) {
+        if (tcp) {
+            System.out.print("tcp ");
+            TCPscan tcpscan = new TCPscan(host, port);
+            tcpscan.run();
+        }
+        if (udp) {
+            
+            System.out.print("udp ");
+            UDPscan udpscan = new UDPscan(host, port);
+            udpscan.run();
+
+        }
+
+    }
+
+    public static void main(String[] args) throws UnknownHostException, ScanneurException {
+        Scanneur s= new Scanneur("prevert.upmf-grenoble.fr", 2048,2050 );
         
     }
-    
+
+    @Override
+    public void run() {
+    }
 }
