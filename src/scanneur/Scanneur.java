@@ -76,7 +76,7 @@ public class Scanneur extends Thread {
         this(hostname, lowestPort, lowestPort);
     }
 
-    public Scanneur(String hostname, int lowestPort, int highestPort) throws ScanneurException {
+    public Scanneur(String hostname, int lowestPort, int highestPort)  {
         try {
             this.host = InetAddress.getByName(hostname);
             this.lowestPort = lowestPort;
