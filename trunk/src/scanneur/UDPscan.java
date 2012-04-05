@@ -19,7 +19,9 @@ public class UDPscan implements Runnable {
         this.port = port;
     }
 
-    
+    public String getPortStatus() {
+        return portStatus;
+    }
 
     public String scanUDP() {
         try {
@@ -28,7 +30,7 @@ public class UDPscan implements Runnable {
             DatagramSocket ds = new DatagramSocket();
             int pp = ds.getLocalPort();
             ds.setSoTimeout(1000);
-            ds.connect(adresse,port);
+            ds.connect(adresse, port);
             ds.send(dp);
             dp = new DatagramPacket(tampon, tampon.length);
 
@@ -36,10 +38,10 @@ public class UDPscan implements Runnable {
             ds.disconnect();
             ds.close();
 
-        }catch (PortUnreachableException ex) {
+        } catch (PortUnreachableException ex) {
             return "FERME";
 
-        }catch (SocketTimeoutException ex) {
+        } catch (SocketTimeoutException ex) {
             return "OUVERT | FILTRE";
 
         } catch (InterruptedIOException e) {
@@ -56,7 +58,6 @@ public class UDPscan implements Runnable {
     @Override
     public void run() {
         this.portStatus = this.scanUDP();
-        System.out.println("udp " +this.portStatus);
+        System.out.println("udp " + this.portStatus);
     }
-
 }
