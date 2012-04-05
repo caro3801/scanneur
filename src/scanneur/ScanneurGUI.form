@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
@@ -77,11 +77,16 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jCheckBoxThread" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBoxUDP" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jCheckBoxUDP" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabelThread" min="-2" pref="89" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jCheckBoxTCP" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldThread" alignment="0" min="-2" pref="56" max="-2" attributes="0"/>
@@ -105,7 +110,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jSeparator2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jSeparator2" alignment="0" pref="102" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jButtonScan" min="-2" pref="37" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -124,9 +129,9 @@
                                       <Component id="jCheckBoxTCP" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jCheckBoxThread" alignment="0" max="32767" attributes="1"/>
-                                      <Component id="jTextFieldThread" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jTextFieldThread" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabelThread" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
@@ -140,7 +145,7 @@
                                       <Component id="jTextFieldFin" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jSeparator1" alignment="1" max="32767" attributes="1"/>
+                              <Component id="jSeparator1" alignment="1" pref="55" max="32767" attributes="1"/>
                           </Group>
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
@@ -186,6 +191,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Port"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButtonPortActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButtonPlage">
           <Properties>
@@ -195,15 +203,12 @@
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Plage"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBoxThread">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="nb Threads"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButtonPlageActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldThread">
           <Properties>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="text" type="java.lang.String" value="7"/>
           </Properties>
         </Component>
@@ -246,6 +251,11 @@
             <Property name="orientation" type="int" value="1"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="jLabelThread">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Threads"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
@@ -256,7 +266,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jSeparator3" alignment="0" pref="550" max="32767" attributes="0"/>
+                      <Component id="jSeparator3" alignment="0" pref="582" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="1"/>
@@ -264,8 +274,8 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" pref="180" max="32767" attributes="1"/>
-                              <Component id="jScrollPane2" alignment="0" pref="180" max="32767" attributes="1"/>
+                              <Component id="jLabel2" pref="198" max="32767" attributes="1"/>
+                              <Component id="jScrollPane2" alignment="0" pref="198" max="32767" attributes="1"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -376,7 +386,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelMsgSysteme" pref="279" max="32767" attributes="0"/>
+                  <Component id="jLabelMsgSysteme" pref="298" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                   <Component id="jLabelProgess" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>

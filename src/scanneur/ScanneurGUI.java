@@ -8,9 +8,13 @@
  *
  * Created on 3 avr. 2012, 11:04:33
  */
-
 package scanneur;
 
+import java.util.Enumeration;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 
 /**
@@ -18,12 +22,20 @@ import javax.swing.JLabel;
  * @author despratc
  */
 public class ScanneurGUI extends javax.swing.JFrame {
-    
-    Scanneur scanneur = null;
+
+    public Scanneur scanneur;
+    public String adresse;
+    public Boolean udp;
+    public Boolean tcp;
+    public int lowestPort;
+    public int highestPort;
+    public int nbThread;
+    public Boolean plage;
 
     /** Creates new form ScanneurGUI */
     public ScanneurGUI() {
         initComponents();
+        setValues();
     }
 
     /** This method is called from within the constructor to
@@ -43,7 +55,6 @@ public class ScanneurGUI extends javax.swing.JFrame {
         jCheckBoxUDP = new javax.swing.JCheckBox();
         jRadioButtonPort = new javax.swing.JRadioButton();
         jRadioButtonPlage = new javax.swing.JRadioButton();
-        jCheckBoxThread = new javax.swing.JCheckBox();
         jTextFieldThread = new javax.swing.JTextField();
         jTextFieldDebut = new javax.swing.JTextField();
         jTextFieldFin = new javax.swing.JTextField();
@@ -51,6 +62,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
         jButtonReset = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
+        jLabelThread = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaOuverts = new javax.swing.JTextArea();
@@ -93,14 +105,21 @@ public class ScanneurGUI extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButtonPort);
         jRadioButtonPort.setText("Port");
+        jRadioButtonPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPortActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButtonPlage);
         jRadioButtonPlage.setSelected(true);
         jRadioButtonPlage.setText("Plage");
+        jRadioButtonPlage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPlageActionPerformed(evt);
+            }
+        });
 
-        jCheckBoxThread.setText("nb Threads");
-
-        jTextFieldThread.setEditable(false);
         jTextFieldThread.setText("7");
 
         jTextFieldDebut.setText("0");
@@ -130,6 +149,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jLabelThread.setText("Threads");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -150,10 +171,13 @@ public class ScanneurGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBoxThread)
-                            .addComponent(jCheckBoxUDP))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jCheckBoxUDP)
+                                .addGap(55, 55, 55))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabelThread, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxTCP)
                             .addComponent(jTextFieldThread, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -171,7 +195,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButtonScan, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -187,9 +211,9 @@ public class ScanneurGUI extends javax.swing.JFrame {
                                     .addComponent(jCheckBoxUDP)
                                     .addComponent(jCheckBoxTCP))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBoxThread, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldThread, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextFieldThread, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabelThread)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jRadioButtonPort)
@@ -198,7 +222,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextFieldDebut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextFieldFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
                         .addGap(14, 14, 14)))
                 .addContainerGap())
         );
@@ -229,15 +253,15 @@ public class ScanneurGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -272,7 +296,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelMsgSysteme, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                .addComponent(jLabelMsgSysteme, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                 .addGap(100, 100, 100)
                 .addComponent(jLabelProgess)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -334,30 +358,57 @@ public class ScanneurGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonResetActionPerformed
 
     private void jButtonScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonScanActionPerformed
-        // TODO add your handling code here:
-         scanneur = new Scanneur(jTextFieldAdresse.getText(), jCheckBoxUDP.isSelected(), jCheckBoxTCP.isSelected(),
-                 jTextFieldDebut.getText(), jTextFieldFin.getText(),
-                 jRadioButtonPlage.isSelected(), jTextFieldThread.getText(), jLabelMsgSysteme);
-    
+        setValues();
+        if (this.adresse.equals("")) {
+            try {
+                throw new ScanneurException("remplir adresse");
+            } catch (ScanneurException ex) {
+                Logger.getLogger(ScanneurGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+        if (this.tcp = false && this.udp == false) {
+            try {
+                throw new ScanneurException("remplir tcp et ou udp");
+            } catch (ScanneurException ex) {
+                Logger.getLogger(ScanneurGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+            if (this.plage) {
+
+                Scanneur s = new Scanneur(this.adresse, this.lowestPort);
+            } else {
+                Scanneur s = new Scanneur(this.adresse, this.lowestPort, this.highestPort);
+            }
+        
+
+
+
     }//GEN-LAST:event_jButtonScanActionPerformed
 
+private void jRadioButtonPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPortActionPerformed
+    setPlage();
+}//GEN-LAST:event_jRadioButtonPortActionPerformed
+
+private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPlageActionPerformed
+    setPlage();
+}//GEN-LAST:event_jRadioButtonPlageActionPerformed
+
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new ScanneurGUI().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonReset;
     private javax.swing.JButton jButtonScan;
     private javax.swing.JCheckBox jCheckBoxTCP;
-    private javax.swing.JCheckBox jCheckBoxThread;
     private javax.swing.JCheckBox jCheckBoxUDP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -365,6 +416,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelAdresse;
     private javax.swing.JLabel jLabelMsgSysteme;
     private javax.swing.JLabel jLabelProgess;
+    private javax.swing.JLabel jLabelThread;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -386,4 +438,57 @@ public class ScanneurGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldThread;
     // End of variables declaration//GEN-END:variables
 
+    public void setValues() {
+        setAdresse();
+        setUDP();
+        setTCP();
+        setLowestPort();
+        setHighestPort();
+        setNbThread();
+        setPlage();
+    }
+
+    public void setAdresse() {
+        this.adresse = jTextFieldAdresse.getText();
+    }
+
+    public void setUDP() {
+        this.adresse = jTextFieldAdresse.getText();
+    }
+
+    public void setTCP() {
+        this.tcp = jCheckBoxTCP.isSelected();
+    }
+
+    public void setLowestPort() {
+        try {
+            this.lowestPort = Integer.parseInt(jTextFieldDebut.getText());
+        } catch (NumberFormatException e) {
+            this.lowestPort = 0;
+        }
+    }
+
+    public void setHighestPort() {
+        this.highestPort = Integer.parseInt(jTextFieldFin.getText());
+    }
+
+    public void setNbThread() {
+        this.nbThread = Integer.parseInt(jTextFieldThread.getText());
+    }
+
+    public void setPlage() {
+        Enumeration elements = buttonGroup1.getElements();
+        while (elements.hasMoreElements()) {
+            AbstractButton button = (AbstractButton) elements.nextElement();
+            if (button.isSelected()) {
+                if (button.getText().equals("Plage")) {
+                    this.plage = true;
+                    this.jTextFieldFin.setVisible(true);
+                } else {
+                    this.plage = false;
+                    this.jTextFieldFin.setVisible(false);
+                }
+            }
+        }
+    }
 }
