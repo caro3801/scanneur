@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException;
  * Scan TCP pour un port et une adresse donnée
  * @author Caroline
  */
-public class TCPscan implements Runnable{
+public class TCPscan implements Runnable {
 
     private InetAddress IP;
     private int port;
@@ -26,7 +26,6 @@ public class TCPscan implements Runnable{
      * @param InetAdress IP L'adresse IP de l'hote a scanner
      * @param port Numero de port a scanner
      */
-     
     public TCPscan(InetAddress IP, int port) {
         this.IP = IP;
         this.port = port;
@@ -49,18 +48,22 @@ public class TCPscan implements Runnable{
         return port;
     }
 
+    public String getPortStatus() {
+        return portStatus;
+    }
+
     /**
      *Scans host/port using the TCP protocol
      */
     public void run() {
         try {
             this.portStatus = this.scanTCP();
-            System.out.println("tcp " +this.portStatus);
+            System.out.println("tcp " + this.portStatus);
             //notifier le statut du port
         } catch (NoRouteToHostException e) {
-            
+
             //erreur lors du contact avec l'host
-            
+
             return;
         }
     }
@@ -84,5 +87,4 @@ public class TCPscan implements Runnable{
         //Ici, c'est ouvert 
         return "OUVERT";
     }
-
 }
