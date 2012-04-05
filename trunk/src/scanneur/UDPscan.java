@@ -8,7 +8,7 @@ import java.net.*;
  *
  * @author mejor
  */
-public class UDPscan implements Runnable {
+public class UDPscan extends Thread {
 
     private InetAddress adresse;
     private int port;

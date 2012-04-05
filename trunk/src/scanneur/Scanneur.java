@@ -123,13 +123,13 @@ public class Scanneur extends Thread {
     private void scan(int port, boolean tcp, boolean udp) {
         if (tcp) {
             TCPscan tcpscan = new TCPscan(host, port);
-            tcpscan.run();
+            tcpscan.start();
             System.out.println(tcpscan.getPortStatus());
         }
         if (udp) {
 
             UDPscan udpscan = new UDPscan(host, port);
-            udpscan.run();
+            udpscan.start();
 
             System.out.println(udpscan.getPortStatus());
 
