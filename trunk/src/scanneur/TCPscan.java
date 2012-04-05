@@ -19,6 +19,7 @@ public class TCPscan implements Runnable{
 
     private InetAddress IP;
     private int port;
+    private String portStatus;
 
     /**
      * Construit un nouveau Thread pour scanner l'hote sur le port TCP
@@ -53,8 +54,8 @@ public class TCPscan implements Runnable{
      */
     public void run() {
         try {
-            String portsStatus = this.scanTCP();
-            System.out.println(portsStatus);
+            this.portStatus = this.scanTCP();
+            System.out.println("tcp " +this.portStatus);
             //notifier le statut du port
         } catch (NoRouteToHostException e) {
             
