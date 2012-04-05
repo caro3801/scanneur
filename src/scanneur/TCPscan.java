@@ -6,7 +6,6 @@ import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import sun.nio.ch.SocketOpts.IP;
 
 /**
  *

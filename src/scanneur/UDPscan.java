@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class UDPscan extends Thread{
     
-    byte [] tampon = "salut!".getBytes();
+    byte [] tampon = new byte[4096];
     int l = tampon.length;
     
     byte [] tampon2 = new byte[256];
@@ -45,32 +45,33 @@ public class UDPscan extends Thread{
     public void run(){
         for(int i=portDebut;i<=portFin;i++){
             try {
+                
                 DatagramPacket dp = new DatagramPacket(tampon,l,adresse,i);
                 DatagramSocket ds = new DatagramSocket();
                 int pp = ds.getLocalPort();
+                ds.setSoTimeout(10000);
                 ds.send(dp);
+                System.out.println("msg envoyé sur le port "+i+" du port "+pp);
+               // DatagramPacket dpR = new DatagramPacket(tampon2, l2);
+                //DatagramSocket dsR = new DatagramSocket(pp);
+   
+                ds.receive(dp);
                 ds.close();
-                System.out.println("msg envoyé"+pp);
-                DatagramPacket dpR = new DatagramPacket(tampon2, l2);
+                String t = new String(dp.getData());
                 
-                System.out.println("1");
-                DatagramSocket dsR = new DatagramSocket(pp);
-                
-                System.out.println("2");
-                dsR.receive(dpR);
-                String t = new String(dpR.getData());
                 System.out.println(t);
             } 
             catch (SocketTimeoutException timeout){
-               System.out.println("msg ");
-                 
+               System.out.println("timeout ");
+                
             }
+            
             catch (SocketException socket){
-                System.out.println("envoyé" + socket);
+                System.out.println("socket NOK" + socket);
                 
             }
             catch (IOException ex){
-                System.out.println("meoyé");
+                System.out.println("IO"+ex);
                  
             }
         }
@@ -80,12 +81,12 @@ public class UDPscan extends Thread{
         
         InetAddress ia = null;
         try {
-            ia = InetAddress.getByName("localhost");
+            ia = InetAddress.getByName("prevert.upmf-grenoble.fr");
         } catch (UnknownHostException ex) {
             System.out.println("hote inconnu");
         }
         
-        UDPscan udpscan = new UDPscan(ia,7);
+        UDPscan udpscan = new UDPscan(ia,123);
         udpscan.start();
    }
     
