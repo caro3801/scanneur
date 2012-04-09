@@ -6,6 +6,8 @@ import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +22,7 @@ public class TCPscan extends Thread {
     private InetAddress IP;
     private int port;
     private String portStatus;
+    private Socket s;
 
     /**
      * Construit un nouveau Thread pour scanner l'hote sur le port TCP
@@ -68,7 +71,7 @@ public class TCPscan extends Thread {
 
     public String scanTCP() throws NoRouteToHostException {
         try {
-            Socket s = new Socket();
+            s = new Socket();
             s.connect(new InetSocketAddress(IP, port));
             s.close();
         } catch (NoRouteToHostException e) {
@@ -84,5 +87,14 @@ public class TCPscan extends Thread {
         }
         //Ici, c'est ouvert 
         return "OUVERT";
+    }
+    
+    public void stopConnection(){
+        try {
+            if (s != null)
+              s.close();
+        } catch (IOException ex) {
+            Logger.getLogger(TCPscan.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

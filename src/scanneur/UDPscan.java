@@ -61,4 +61,5 @@ public class UDPscan extends Thread {
         System.out.println(this.port + "\tudp\t" + this.portStatus);
 
     }
+
 }
