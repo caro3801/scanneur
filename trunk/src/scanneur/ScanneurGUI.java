@@ -359,6 +359,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
 
     private void jButtonScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonScanActionPerformed
         setValues();
+        Scanneur s;
         if (this.adresse.equals("")) {
             try {
                 throw new ScanneurException("remplir adresse");
@@ -375,14 +376,14 @@ public class ScanneurGUI extends javax.swing.JFrame {
         } 
             if (this.plage) {
 
-                Scanneur s = new Scanneur(this.adresse, this.lowestPort);
+                s = new Scanneur(this.adresse, this.lowestPort);
             } else {
-                Scanneur s = new Scanneur(this.adresse, this.lowestPort, this.highestPort);
+                s = new Scanneur(this.adresse, this.lowestPort, this.highestPort);
             }
+        System.out.println("avant le start");
         
-
-
-
+            s.start();
+ 
     }//GEN-LAST:event_jButtonScanActionPerformed
 
 private void jRadioButtonPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPortActionPerformed
@@ -453,7 +454,7 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
     }
 
     public void setUDP() {
-        this.adresse = jTextFieldAdresse.getText();
+        this.udp = jCheckBoxUDP.isSelected();
     }
 
     public void setTCP() {
