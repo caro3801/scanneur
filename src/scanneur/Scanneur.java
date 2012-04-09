@@ -29,6 +29,8 @@ public class Scanneur extends Thread {
     public static int nbThread = 30;
     public Vector<Thread> vectorT = new Vector<>();
 
+    //ce constructeur ne sert jamais!
+    //mais on peut utiliser son exception!!
     public Scanneur(String hostname) throws ScanneurException {
         try {
             host = InetAddress.getByName(hostname);
@@ -39,6 +41,7 @@ public class Scanneur extends Thread {
 
     /**
      * Consctructeur de scanneur pour un port donne
+     *
      * @param hostname Adresse de l'hote
      * @param port Numero de port a scanner
      */
@@ -48,6 +51,7 @@ public class Scanneur extends Thread {
 
     /**
      * Constructeur du scanner pour une plage de port
+     *
      * @param hostname Adresse de l'hote
      * @param lowestPort port de début
      * @param highestPort port de fin
@@ -57,7 +61,6 @@ public class Scanneur extends Thread {
             this.host = InetAddress.getByName(hostname);
             this.lowestPort = lowestPort;
             this.highestPort = highestPort;
-            this.vectorT.add(this);
 
         } catch (UnknownHostException ex) {
             Logger.getLogger(Scanneur.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,47 +68,45 @@ public class Scanneur extends Thread {
     }
 
     /**
-     * Parcours de la plage de ports 
-     * @throws ScanneurException 
+     * Parcours de la plage de ports
+     *
+     * @throws ScanneurException
      */
-    private void parcours() throws ScanneurException {
-        if (lowestPort <= highestPort && lowestPort >= 0) {
-            portsToScan = new int[highestPort - lowestPort + 1];
-
-            //definie les ports à scanner
-            int i = 0;
-
-            while (lowestPort <= highestPort) {
-                portsToScan[i] = lowestPort++;
-
-                //  System.out.println(portsToScan[i]);
-                scan(portsToScan[i++], tcp, udp);
-            }
+    public void parcours() throws ScanneurException {
+        if (lowestPort > highestPort || lowestPort < 0 || highestPort > 66000) {
+            throw new ScanneurException("Mauvais choix de ports");
         } else {
-            //mauvais interval de ports
-            throw new ScanneurException("Mauvais interval de ports");
+            //System.out.println(tcp+"  "+nbThread);
+            //definie les ports à scanner
+            int i = lowestPort;
+            while (i <= highestPort) {
+               // System.out.println(i);
+                scan(i, tcp, udp);
+                i++;
+            }
         }
     }
 
     private void scan(int port, boolean tcp, boolean udp) {
-      //  Thread[] t = new Thread[5000];
-        
+        //  Thread[] t = new Thread[5000];
+
 //        System.out.println("nb thread actif : "+Thread.enumerate(vectorT.toArray(t)));
-            
+
         if (tcp) {
 
             while (Thread.activeCount() > this.nbThread);
             TCPscan tcpscan = new TCPscan(host, port);
             vectorT.add(tcpscan);
-            tcpscan.start();
             
+            tcpscan.start();
+
             //System.out.println(tcpscan.getPortStatus());
 
         }
         if (udp) {
             while (Thread.activeCount() > this.nbThread);
             //System.out.println(Thread.activeCount());
-            
+
 
             UDPscan udpscan = new UDPscan(host, port);
             vectorT.add(udpscan);
@@ -118,29 +119,35 @@ public class Scanneur extends Thread {
     }
 
     public static void main(String[] args) throws UnknownHostException, ScanneurException {
-        Scanneur s = new Scanneur("localhost", 0, 54000);
+        Scanneur s = new Scanneur("localhost", 0, 120);
         s.parcours();
 
     }
-
     @Override
     public void run() {
+        try {
+            this.vectorT.add(this);
+            
+            this.parcours();
+        } catch (ScanneurException ex) {
+            Logger.getLogger(Scanneur.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
-     * 
+     *
      */
     public void ArretScan() {
         int l = vectorT.size();
         for (int i = 0; i < l; i++) {
-           
+
             //Permet de fermer la connection TCP proprement
-            if (vectorT.get(i) instanceof TCPscan){
-                TCPscan tcpTemp = (TCPscan)vectorT.get(i);
+            if (vectorT.get(i) instanceof TCPscan) {
+                TCPscan tcpTemp = (TCPscan) vectorT.get(i);
                 tcpTemp.stopConnection();
-        }
+            }
             vectorT.get(i).stop();
-            
+
         }
     }
 }

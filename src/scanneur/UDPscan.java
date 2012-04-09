@@ -28,7 +28,6 @@ public class UDPscan extends Thread {
             byte[] tampon = new byte[128];
             DatagramPacket dp = new DatagramPacket(tampon, tampon.length, adresse, port);
             DatagramSocket ds = new DatagramSocket();
-            int pp = ds.getLocalPort();
             ds.setSoTimeout(1000);
             ds.connect(adresse, port);
             ds.send(dp);

@@ -2,3 +2,7 @@ corriger bug graphique ...
 
 tester le bouton stop
 faire la progression
+verifier la valeur maximal d'un port (66000?, 65000?)
+faire toute les erreurs (hostexception etc) bien propre!
+
+GROS bug lors de l'initialisation avec l'interface -> je pense qu'on peut le reprendre a zéro!
