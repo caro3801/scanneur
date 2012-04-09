@@ -1,1 +1,4 @@
 corriger bug graphique ...
+
+tester le bouton stop
+faire la progression
