@@ -1,8 +1,11 @@
 corriger bug graphique ...
 
-tester le bouton stop
 faire la progression
-verifier la valeur maximal d'un port (66000?, 65000?)
-faire toute les erreurs (hostexception etc) bien propre!
+faire l'affichage
 
-GROS bug lors de l'initialisation avec l'interface -> je pense qu'on peut le reprendre a zéro!
+Il ya 2 fichier GUI:
+dans GUI on peut modifier tout le code (desfois c'est plus simple!)
+dans GUI2 on peut modifier l'interface en mode graphique(desfois c'est plus simple!!)
+Dans cette version, on utilise GUI2
+
+

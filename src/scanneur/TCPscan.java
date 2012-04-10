@@ -58,6 +58,7 @@ public class TCPscan extends Thread {
     /**
      *Scans host/port using the TCP protocol
      */
+    @Override
     public void run() {
         try {
             this.portStatus = this.scanTCP();
