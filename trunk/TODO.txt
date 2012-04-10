@@ -1,11 +1,7 @@
 corriger bug graphique ...
 
-faire la progression
-faire l'affichage
+pb quand on met a 1 Thread...
 
-Il ya 2 fichier GUI:
-dans GUI on peut modifier tout le code (desfois c'est plus simple!)
-dans GUI2 on peut modifier l'interface en mode graphique(desfois c'est plus simple!!)
-Dans cette version, on utilise GUI2
+commenter
 
 
