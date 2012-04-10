@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.NoRouteToHostException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,17 +16,20 @@ import java.util.logging.Logger;
  */
 /**
  * Scan TCP pour un port et une adresse donnée
+ *
  * @author Caroline
  */
-public class TCPscan extends Thread {
+public class TCPscan extends Thread implements Observable {
 
     private InetAddress IP;
-    private int port;
-    private String portStatus;
+    protected int port;
+    protected int portStatus;
     private Socket s;
+    private Scanneur observateur;
 
     /**
      * Construit un nouveau Thread pour scanner l'hote sur le port TCP
+     *
      * @param InetAdress IP L'adresse IP de l'hote a scanner
      * @param port Numero de port a scanner
      */
@@ -35,8 +39,9 @@ public class TCPscan extends Thread {
     }
 
     /**
-     * 
-     * Retourne l'adresse qui est en train d'être scanné 
+     *
+     * Retourne l'adresse qui est en train d'être scanné
+     *
      * @return adresse en cours de scannage
      */
     public InetAddress getIP() {
@@ -45,32 +50,32 @@ public class TCPscan extends Thread {
 
     /**
      * Return le port qui est en train d'être scanné
+     *
      * @return port en cours de scannage
      */
     public int getPort() {
         return port;
     }
 
-    public String getPortStatus() {
+    public int getPortStatus() {
         return portStatus;
     }
 
     /**
-     *Scans host/port using the TCP protocol
+     * Scans host/port using the TCP protocol
      */
     @Override
     public void run() {
         try {
             this.portStatus = this.scanTCP();
-            System.out.println(this.port+"\ttcp\t" + this.portStatus);
+            System.out.println(this.port + "\ttcp\t" + this.portStatus);
+            this.notifierObservateurs();
             //notifier le statut du port
         } catch (NoRouteToHostException e) {
-
-           
         }
     }
 
-    public String scanTCP() throws NoRouteToHostException {
+    public int scanTCP() throws NoRouteToHostException {
         try {
             s = new Socket();
             s.connect(new InetSocketAddress(IP, port));
@@ -81,21 +86,37 @@ public class TCPscan extends Thread {
             /*
              * Lorsqu'on a mis trop de temps
              */
-            return "FILTRE";
+            return 2;
         } catch (IOException e) {
-            return "FERME";
+            return 0;
 
         }
         //Ici, c'est ouvert 
-        return "OUVERT";
+        return 1;
     }
-    
-    public void stopConnection(){
+
+    public void stopConnection() {
         try {
-            if (s != null)
-              s.close();
+            if (s != null) {
+                s.close();
+            }
         } catch (IOException ex) {
             Logger.getLogger(TCPscan.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void ajouterObservateur(Scanneur s) {
+        this.observateur = s;
+    }
+
+    @Override
+    public void supprimerObservateur() {
+        this.observateur = null;
+    }
+
+    @Override
+    public void notifierObservateurs() {
+        observateur.actualiser(this);
     }
 }

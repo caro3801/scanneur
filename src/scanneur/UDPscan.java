@@ -8,22 +8,23 @@ import java.net.*;
  *
  * @author mejor
  */
-public class UDPscan extends Thread {
+public class UDPscan extends Thread implements Observable{
 
     private InetAddress adresse;
-    private int port;
-    private String portStatus;
+    protected int portStatus;
+    protected int port;
+    private Scanneur observateur;
 
     UDPscan(InetAddress adresse, int port) {
         this.adresse = adresse;
         this.port = port;
     }
 
-    public String getPortStatus() {
+    public int getPortStatus() {
         return portStatus;
     }
 
-    public String scanUDP() {
+    public int scanUDP() {
         try {
             byte[] tampon = new byte[128];
             DatagramPacket dp = new DatagramPacket(tampon, tampon.length, adresse, port);
@@ -38,27 +39,43 @@ public class UDPscan extends Thread {
             ds.close();
 
         } catch (PortUnreachableException ex) {
-            return "FERME";
+            return 0;
 
         } catch (SocketTimeoutException ex) {
-            return "OUVERT | FILTRE";
+            return 2;
 
         } catch (InterruptedIOException e) {
-            return "FERME";
+            return 0;
         } catch (IOException ex) {
-            return "FERME";
+            return 0;
 
         } catch (Exception e) {
-            return "FERME";
+            return 0;
         }
-        return "OUVERT";
+        return 1;
     }
 
     @Override
     public void run() {
         this.portStatus = this.scanUDP();
         System.out.println(this.port + "\tudp\t" + this.portStatus);
+        this.notifierObservateurs();
 
+    }
+
+    @Override
+    public void ajouterObservateur(Scanneur s) {
+        this.observateur = s;
+    }
+
+    @Override
+    public void supprimerObservateur() {
+       this.observateur = null;
+    }
+
+    @Override
+    public void notifierObservateurs() {
+        observateur.actualiser(this);
     }
 
 }
