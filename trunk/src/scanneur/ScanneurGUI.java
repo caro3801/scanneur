@@ -10,12 +10,15 @@
  */
 package scanneur;
 
+import java.awt.Cursor;
 import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -36,7 +39,9 @@ public class ScanneurGUI extends javax.swing.JFrame {
      */
     public ScanneurGUI() {
         initComponents();
-        // setValues();
+        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     /**
@@ -77,7 +82,6 @@ public class ScanneurGUI extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jProgressBar = new javax.swing.JProgressBar();
-        jLabelProgess = new javax.swing.JLabel();
         jLabelMsgSysteme = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -197,8 +201,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonScan, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                    .addComponent(jButtonReset, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                    .addComponent(jButtonScan, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                    .addComponent(jButtonReset, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -206,7 +210,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButtonScan, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -233,7 +237,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextFieldDebut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextFieldFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
                         .addGap(14, 14, 14)))
                 .addContainerGap())
         );
@@ -255,7 +259,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
 
         jLabel2.setText("Fermés");
 
-        jLabel3.setText("Filtrés (fermés)");
+        jLabel3.setText("Filtrés (ouvert)");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -271,8 +275,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -297,7 +301,12 @@ public class ScanneurGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabelProgess.setText("%");
+        jProgressBar.setStringPainted(true);
+        jProgressBar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jProgressBarStateChanged(evt);
+            }
+        });
 
         jLabelMsgSysteme.setText("Rien");
 
@@ -307,10 +316,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelMsgSysteme, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
-                .addGap(100, 100, 100)
-                .addComponent(jLabelProgess)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelMsgSysteme, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addGap(115, 115, 115)
                 .addComponent(jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -320,9 +327,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabelMsgSysteme)
-                        .addComponent(jLabelProgess)))
+                    .addComponent(jLabelMsgSysteme))
                 .addContainerGap())
         );
 
@@ -373,19 +378,23 @@ public class ScanneurGUI extends javax.swing.JFrame {
             setValues();
             this.jLabelMsgSysteme.setText("");
             if (jRadioButtonPlage.isSelected()) {
-                scanneur = new Scanneur(adresse, lowestPort, highestPort, udp, tcp, nbThread, jLabelMsgSysteme, jLabelProgess);
+                scanneur = new Scanneur(adresse, lowestPort, highestPort, udp, tcp, nbThread, jLabelMsgSysteme, jProgressBar);
             } else {
-                scanneur = new Scanneur(adresse, lowestPort, udp, tcp, nbThread, jLabelMsgSysteme, jLabelProgess);
+                scanneur = new Scanneur(adresse, lowestPort, udp, tcp, nbThread, jLabelMsgSysteme, jProgressBar);
             }
             if (scanneur.paramOK) {
                 jButtonScan.setText("STOP");
                 scanneur.setJTextArea(jTextAreaOuverts, jTextAreaFermes, jTextAreaFiltres);
-                scanneur.setJButton(jButtonScan);
-
+                
                 scanneur.start();
+                this.jLabelMsgSysteme.setText("scan en cours...");
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
             }
         } else {
             scanneur.ArretScan();
+
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             jButtonScan.setText("SCAN");
         }
     }//GEN-LAST:event_jButtonScanActionPerformed
@@ -405,6 +414,16 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
     private void jRadioButtonPortPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jRadioButtonPortPropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonPortPropertyChange
+
+    private void jProgressBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jProgressBarStateChanged
+        if (jProgressBar.getValue() >= 100) {
+
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            this.jLabelMsgSysteme.setText("scan terminé !");
+            
+            jButtonScan.setText("SCAN");
+        }
+    }//GEN-LAST:event_jProgressBarStateChanged
 
     /**
      * @param args the command line arguments
@@ -428,7 +447,6 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelAdresse;
     private javax.swing.JLabel jLabelMsgSysteme;
-    private javax.swing.JLabel jLabelProgess;
     private javax.swing.JLabel jLabelThread;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -454,7 +472,7 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
     public void setValues() {
 
         reset();
-        
+
         setAdresse();
         setUDP();
         setTCP();

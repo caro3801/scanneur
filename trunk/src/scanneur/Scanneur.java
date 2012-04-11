@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
 /**
@@ -31,15 +32,13 @@ public class Scanneur extends Thread implements Observateur {
     private int nbThread;
     private ArrayList<Thread> arrayListT = new ArrayList<Thread>();
     protected JLabel msgSystem;
-    protected JLabel progress;
+    protected JProgressBar progressBar;
     public boolean paramOK = true;
     protected JTextArea ouvert;
     protected JTextArea ferme;
     protected JTextArea filtre;
-    protected JButton boutonScan;
     private int nbScanTotal;
     private int nbScanFini = 0;
-    
 
     public Scanneur(String adresse, int lowestPort, int highestPort, boolean udp,
             boolean tcp, int nbThread) {
@@ -48,16 +47,16 @@ public class Scanneur extends Thread implements Observateur {
     }
 
     public Scanneur(String adresse, int lowestPort, boolean udp,
-            boolean tcp, int nbThread, JLabel jLabelMsgSysteme, JLabel jLabelProgess) {
+            boolean tcp, int nbThread, JLabel jLabelMsgSysteme, JProgressBar jProgressBar) {
 
-        this(adresse, lowestPort, lowestPort, udp, tcp, nbThread, jLabelMsgSysteme, jLabelProgess);
+        this(adresse, lowestPort, lowestPort, udp, tcp, nbThread, jLabelMsgSysteme, jProgressBar);
     }
 
     public Scanneur(String adresse, int lowestPort, int highestPort, boolean udp,
-            boolean tcp, int nbThread, JLabel jLabelMsgSysteme, JLabel jLabelProgess) {
+            boolean tcp, int nbThread, JLabel jLabelMsgSysteme, JProgressBar jProgressBar) {
 
         this.msgSystem = jLabelMsgSysteme;
-        this.progress = jLabelProgess;
+        this.progressBar = jProgressBar;
         host = testHost(adresse);
         testPort(lowestPort, highestPort);
         testProtocol(udp, tcp);
@@ -67,16 +66,16 @@ public class Scanneur extends Thread implements Observateur {
         this.highestPort = highestPort;
         this.udp = udp;
         this.tcp = tcp;
-        this.nbThread = nbThread+Thread.activeCount();
+        this.nbThread = nbThread + Thread.activeCount();
     }
-    
 
     @Override
     public void run() {
         this.arrayListT.add(this);
         nbScanTotal = highestPort - lowestPort;
-        if (tcp && udp)
-            nbScanTotal*=2;
+        if (tcp && udp) {
+            nbScanTotal *= 2;
+        }
         int i = lowestPort;
         while (i <= highestPort) {
             scan(i++, tcp, udp);
@@ -158,21 +157,22 @@ public class Scanneur extends Thread implements Observateur {
         this.ferme = ferme;
         this.filtre = filtre;
     }
-    
-    public void setJButton(JButton bouton){
-        this.boutonScan = bouton;
-    }
 
     
+
     @Override
-    synchronized public void  actualiser(Observable o) {
+    synchronized public void actualiser(Observable o) {
         nbScanFini++;
-        int pourcentage = nbScanFini*100/nbScanTotal;
-        this.progress.setText(pourcentage+"%");
-        if (pourcentage >=100)
-            this.boutonScan.setText("SCAN");
+        int a = nbScanTotal;
+        if (udp && tcp) {
+            a += 2;
+        } else if (udp || udp) {
+            a += 1;
+        }
+        double pourcentage = Math.floor(nbScanFini * 100 / a);
+        this.progressBar.setValue((int) pourcentage);
         if (o instanceof TCPscan) {
-            TCPscan oTCP= (TCPscan) o;
+            TCPscan oTCP = (TCPscan) o;
             if (oTCP.portStatus == 0) {
                 ferme.setText(ferme.getText() + "port : " + oTCP.port + " en TCP\n");
             }
@@ -196,5 +196,6 @@ public class Scanneur extends Thread implements Observateur {
             }
 
         }
+
     }
 }
