@@ -33,6 +33,10 @@ public class ScanneurGUI extends javax.swing.JFrame {
     public int lowestPort;
     public int highestPort;
     public int nbThread;
+    public double temps;
+    public long tempsT1;
+    public long tempsT2;
+    
 
     /**
      * Creates new form ScanneurGUI
@@ -385,15 +389,17 @@ public class ScanneurGUI extends javax.swing.JFrame {
             if (scanneur.paramOK) {
                 jButtonScan.setText("STOP");
                 scanneur.setJTextArea(jTextAreaOuverts, jTextAreaFermes, jTextAreaFiltres);
-                
+
                 scanneur.start();
-                this.jLabelMsgSysteme.setText("scan en cours...");
+                this.jLabelMsgSysteme.setText("Scan en cours...");
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             }
         } else {
             scanneur.ArretScan();
-
+            setTempsT2(System.currentTimeMillis());
+            long inter=(this.tempsT2-this.tempsT1)/1000;
+            this.jLabelMsgSysteme.setText("Scan stoppé au bout de "+inter +" s" );
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             jButtonScan.setText("SCAN");
         }
@@ -419,8 +425,11 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
         if (jProgressBar.getValue() >= 100) {
 
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            this.jLabelMsgSysteme.setText("scan terminé !");
             
+            setTempsT2(System.currentTimeMillis());
+            long inter=(this.tempsT2-this.tempsT1)/1000;
+            this.jLabelMsgSysteme.setText("Scan terminé en "+inter +" s !");
+
             jButtonScan.setText("SCAN");
         }
     }//GEN-LAST:event_jProgressBarStateChanged
@@ -479,6 +488,7 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
         setLowestPort();
         setHighestPort();
         setNbThread();
+        setTempsT1(System.currentTimeMillis());
     }
 
     public void setAdresse() {
@@ -511,4 +521,13 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
         jTextAreaFiltres.setText("");
 
     }
+
+    public void setTempsT1(long tempsT1) {
+        this.tempsT1 = tempsT1;
+    }
+
+    public void setTempsT2(long tempsT2) {
+        this.tempsT2 = tempsT2;
+    }
+  
 }
