@@ -78,7 +78,7 @@ public class TCPscan extends Thread implements Observable {
     public int scanTCP() throws NoRouteToHostException {
         try {
             s = new Socket();
-            s.connect(new InetSocketAddress(IP, port));
+            s.connect(new InetSocketAddress(IP, port),50);
             s.close();
         } catch (NoRouteToHostException e) {
             throw e; //throw to calling

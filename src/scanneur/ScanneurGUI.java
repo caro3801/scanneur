@@ -34,8 +34,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
     public int highestPort;
     public int nbThread;
     public double temps;
-    public long tempsT1;
-    public long tempsT2;
+    public double tempsT1;
+    public double tempsT2;
     
 
     /**
@@ -398,7 +398,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
         } else {
             scanneur.ArretScan();
             setTempsT2(System.currentTimeMillis());
-            long inter=(this.tempsT2-this.tempsT1)/1000;
+            double inter=(this.tempsT2-this.tempsT1)/1000;
             this.jLabelMsgSysteme.setText("Scan stoppé au bout de "+inter +" s" );
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             jButtonScan.setText("SCAN");
@@ -427,7 +427,7 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             
             setTempsT2(System.currentTimeMillis());
-            long inter=(this.tempsT2-this.tempsT1)/1000;
+            double inter=(this.tempsT2-this.tempsT1)/1000;
             this.jLabelMsgSysteme.setText("Scan terminé en "+inter +" s !");
 
             jButtonScan.setText("SCAN");
@@ -522,11 +522,11 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
 
     }
 
-    public void setTempsT1(long tempsT1) {
+    public void setTempsT1(double tempsT1) {
         this.tempsT1 = tempsT1;
     }
 
-    public void setTempsT2(long tempsT2) {
+    public void setTempsT2(double tempsT2) {
         this.tempsT2 = tempsT2;
     }
   
