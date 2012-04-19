@@ -247,15 +247,18 @@ public class ScanneurGUI extends javax.swing.JFrame {
         );
 
         jTextAreaOuverts.setColumns(20);
+        jTextAreaOuverts.setEditable(false);
         jTextAreaOuverts.setRows(5);
         jTextAreaOuverts.setPreferredSize(new java.awt.Dimension(164, 74));
         jScrollPane1.setViewportView(jTextAreaOuverts);
 
         jTextAreaFermes.setColumns(20);
+        jTextAreaFermes.setEditable(false);
         jTextAreaFermes.setRows(5);
         jScrollPane2.setViewportView(jTextAreaFermes);
 
         jTextAreaFiltres.setColumns(20);
+        jTextAreaFiltres.setEditable(false);
         jTextAreaFiltres.setRows(5);
         jScrollPane3.setViewportView(jTextAreaFiltres);
 
