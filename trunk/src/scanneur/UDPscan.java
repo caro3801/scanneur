@@ -29,7 +29,7 @@ public class UDPscan extends Thread implements Observable{
             byte[] tampon = new byte[128];
             DatagramPacket dp = new DatagramPacket(tampon, tampon.length, adresse, port);
             DatagramSocket ds = new DatagramSocket();
-            ds.setSoTimeout(1000);
+            ds.setSoTimeout(100);
             ds.connect(adresse, port);
             ds.send(dp);
             dp = new DatagramPacket(tampon, tampon.length);
