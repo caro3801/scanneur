@@ -19,6 +19,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -36,16 +37,25 @@ public class ScanneurGUI extends javax.swing.JFrame {
     public double temps;
     public double tempsT1;
     public double tempsT2;
-    
 
     /**
      * Creates new form ScanneurGUI
      */
     public ScanneurGUI() {
         initComponents();
+        
+        //empeche le scroll horizontal
         jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        //autoscroll vertical
+        DefaultCaret caretFermes = (DefaultCaret) jTextAreaFermes.getCaret();
+        caretFermes.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        DefaultCaret caretFiltres = (DefaultCaret) jTextAreaFiltres.getCaret();
+        caretFiltres.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        DefaultCaret caretOuverts = (DefaultCaret) jTextAreaOuverts.getCaret();
+        caretOuverts.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
     /**
@@ -401,8 +411,8 @@ public class ScanneurGUI extends javax.swing.JFrame {
         } else {
             scanneur.ArretScan();
             setTempsT2(System.currentTimeMillis());
-            double inter=(this.tempsT2-this.tempsT1)/1000;
-            this.jLabelMsgSysteme.setText("Scan stoppé au bout de "+inter +" s" );
+            double inter = (this.tempsT2 - this.tempsT1) / 1000;
+            this.jLabelMsgSysteme.setText("Scan stoppé au bout de " + inter + " s");
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             jButtonScan.setText("SCAN");
         }
@@ -428,10 +438,10 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
         if (jProgressBar.getValue() >= 100) {
 
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            
+
             setTempsT2(System.currentTimeMillis());
-            double inter=(this.tempsT2-this.tempsT1)/1000;
-            this.jLabelMsgSysteme.setText("Scan terminé en "+inter +" s !");
+            double inter = (this.tempsT2 - this.tempsT1) / 1000;
+            this.jLabelMsgSysteme.setText("Scan terminé en " + inter + " s !");
 
             jButtonScan.setText("SCAN");
         }
@@ -532,5 +542,4 @@ private void jRadioButtonPlageActionPerformed(java.awt.event.ActionEvent evt) {/
     public void setTempsT2(double tempsT2) {
         this.tempsT2 = tempsT2;
     }
-  
 }
