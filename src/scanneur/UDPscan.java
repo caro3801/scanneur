@@ -10,11 +10,28 @@ import java.net.*;
  */
 public class UDPscan extends Thread implements Observable{
 
+    /**
+     * adresse de connexion
+     */
     private InetAddress adresse;
+    /**
+     * statut final du port
+     */
     protected int portStatus;
+    /**
+     * port de connexion
+     */
     protected int port;
+    /**
+     * observateur à notifier
+     */
     private Scanneur observateur;
 
+    /**
+     * constructeur 
+     * @param adresse
+     * @param port 
+     */
     UDPscan(InetAddress adresse, int port) {
         this.adresse = adresse;
         this.port = port;
@@ -24,6 +41,10 @@ public class UDPscan extends Thread implements Observable{
         return portStatus;
     }
 
+    /**
+     * effectue le scan udp
+     * @return 
+     */
     public int scanUDP() {
         try {
             byte[] tampon = new byte[128];
