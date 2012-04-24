@@ -151,7 +151,7 @@ public class ScanneurGUI extends javax.swing.JFrame {
 
         jTextFieldThread.setText("400");
 
-        jTextFieldDebut.setText("0");
+        jTextFieldDebut.setText("1");
 
         jTextFieldFin.setText("65535");
         jTextFieldFin.addActionListener(new java.awt.event.ActionListener() {
