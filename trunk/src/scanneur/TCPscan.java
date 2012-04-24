@@ -11,20 +11,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Caroline
- */
-/**
  * Scan TCP pour un port et une adresse donnée
  *
  * @author Caroline
  */
 public class TCPscan extends Thread implements Observable {
 
+    /**
+     * adresse à laquel effectué la connexion
+     */
     private InetAddress IP;
+    /**
+     * port auquel se connecter
+     */
     protected int port;
+    /**
+     * statut final du port
+     */
     protected int portStatus;
+    /**
+     * socket de connexion
+     */
     private Socket s;
+    /**
+     * observateur à notifier de la fin du traitement
+     */
     private Scanneur observateur;
 
     /**
@@ -56,6 +67,7 @@ public class TCPscan extends Thread implements Observable {
     public int getPort() {
         return port;
     }
+
 
     public int getPortStatus() {
         return portStatus;
