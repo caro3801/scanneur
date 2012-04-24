@@ -194,14 +194,15 @@ public class Scanneur extends Thread implements Observateur {
     public void ArretScan() {
         int l = arrayListT.size();
         for (int i = 0; i < l; i++) {
-
             //Permet de fermer la connection TCP proprement
             if (arrayListT.get(i) instanceof TCPscan) {
                 TCPscan tcpTemp = (TCPscan) arrayListT.get(i);
                 tcpTemp.stopConnection();
+            }else if (arrayListT.get(i) instanceof UDPscan){
+                UDPscan udpTemp = (UDPscan) arrayListT.get(i);
+                udpTemp.stopConnection();
             }
             arrayListT.get(i).stop();
-
         }
     }
 
@@ -240,7 +241,7 @@ public class Scanneur extends Thread implements Observateur {
     private void testProtocol(boolean udp, boolean tcp) {
         if (!udp && !tcp) {
             paramOK = false;
-            msgSystem.setText("Veuillez choisir au moins un protocol de connexion");
+            msgSystem.setText("Veuillez choisir au moins un protocole de connexion");
         }
     }
 
@@ -275,11 +276,11 @@ public class Scanneur extends Thread implements Observateur {
      */
     @Override
     synchronized public void actualiser(Observable o) {
-        nbScanFini++;
+       nbScanFini++;
         int a = nbScanTotal;
         if (udp && tcp) {
             a += 2;
-        } else if (udp || udp) {
+        } else{
             a += 1;
         }
         double pourcentage = Math.floor(nbScanFini * 100 / a);

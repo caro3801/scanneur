@@ -3,6 +3,8 @@ package scanneur;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +28,8 @@ public class UDPscan extends Thread implements Observable{
      * observateur à notifier
      */
     private Scanneur observateur;
+    
+    DatagramSocket ds;
 
     /**
      * constructeur 
@@ -49,7 +53,7 @@ public class UDPscan extends Thread implements Observable{
         try {
             byte[] tampon = new byte[128];
             DatagramPacket dp = new DatagramPacket(tampon, tampon.length, adresse, port);
-            DatagramSocket ds = new DatagramSocket();
+            ds = new DatagramSocket();
             ds.setSoTimeout(100);
             ds.connect(adresse, port);
             ds.send(dp);
@@ -58,6 +62,7 @@ public class UDPscan extends Thread implements Observable{
             ds.receive(dp);
             ds.disconnect();
             ds.close();
+            return 1;
 
         } catch (PortUnreachableException ex) {
             return 0;
@@ -73,7 +78,7 @@ public class UDPscan extends Thread implements Observable{
         } catch (Exception e) {
             return 0;
         }
-        return 1;
+        
     }
 
     @Override
@@ -82,6 +87,14 @@ public class UDPscan extends Thread implements Observable{
         System.out.println(this.port + "\tudp\t" + this.portStatus);
         this.notifierObservateurs();
 
+    }
+    
+        public void stopConnection() {
+       
+            if (!ds.isClosed())
+            ds.close();
+            
+      
     }
 
     @Override

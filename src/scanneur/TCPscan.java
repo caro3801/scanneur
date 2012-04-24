@@ -68,7 +68,6 @@ public class TCPscan extends Thread implements Observable {
         return port;
     }
 
-
     public int getPortStatus() {
         return portStatus;
     }
@@ -89,27 +88,25 @@ public class TCPscan extends Thread implements Observable {
 
     public int scanTCP() throws NoRouteToHostException {
         try {
-            s = new Socket();
-            s.connect(new InetSocketAddress(IP, port),50);
+            s = new Socket(IP, port);
+       
             s.close();
+            //Ici, c'est ouvert 
+            return 1;
         } catch (NoRouteToHostException e) {
-            throw e; //throw to calling
-        } catch (SocketTimeoutException e) {
-            /*
-             * Lorsqu'on a mis trop de temps
-             */
-            return 2;
-        } catch (IOException e) {
+            System.out.println("noroute");
+            //throw e; //throw to calling
             return 0;
-
+        } catch (IOException e) {
+            //ferme
+            return 0;
         }
-        //Ici, c'est ouvert 
-        return 1;
     }
 
     public void stopConnection() {
         try {
-            if (s != null) {
+           // System.out.println(""+s);
+            if (s != null && !s.isClosed() ) {
                 s.close();
             }
         } catch (IOException ex) {
